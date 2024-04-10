@@ -1,23 +1,24 @@
 import { Request, Response } from "express";
 import { cancelAppointmentsService, getAppointmentService, getAppointmentsService, scheduleAppointmentsService } from "../services/appointment/appointmentServices";
+import IAppointment from "../interfaces/IAppointment";
 
 
 export const getAppointments = async (req: Request, res: Response)=>{
-    const message:string = await getAppointmentsService();
-    res.send(message);
+    const appointments:IAppointment[] = await getAppointmentsService();
+    res.send(appointments);
 }
 
 export const getAppointment = async (req: Request, res: Response)=>{
-    const message:string = await getAppointmentService();
-    res.send(message);
+    const appointment:IAppointment | undefined = await getAppointmentService(+req.params.id);
+    res.send(appointment);
 }
 
 export const scheduleAppointment = async (req: Request, res: Response)=>{
-    const message:string = await scheduleAppointmentsService();
-    res.send(message);
+    const newAppointment:IAppointment | null = await scheduleAppointmentsService(req.body);
+    res.send(newAppointment);
 }
 
 export const cancelAppointment = async (req: Request, res: Response)=>{
-    const message:string = await cancelAppointmentsService();
+    const message:string | null = await cancelAppointmentsService(req.body.id);
     res.send(message);
 }

@@ -1,15 +1,39 @@
-export const getAppointmentsService = async ():Promise<string>=>{
-    return "Obtener el listado de todos los turnos de todos los usuarios"
+import AppointmentDTO from "../../DTO/appointmentDTO";
+import IAppointment, { StatusEnum } from "../../interfaces/IAppointment";
+
+//DB falsa
+const appointments:IAppointment[] =[]
+let id = 0;
+
+export const getAppointmentsService = async ():Promise<IAppointment[]>=>{
+    return appointments;
 }
 
-export const getAppointmentService = async ():Promise<string>=>{
-    return "Obtener el detalle de un turno específico."
+export const getAppointmentService = async (id:number):Promise<IAppointment| undefined>=>{
+    return appointments.find((appointments:IAppointment)=>appointments.id === id);
 }
 
-export const scheduleAppointmentsService = async ():Promise<string>=>{
-    return "Agendar un nuevo turno."
+export const scheduleAppointmentsService = async (appData:AppointmentDTO):Promise<IAppointment | null>=>{
+    if (appData.userId || appData.userId === 0) {
+        const newAppointment:IAppointment = {
+            id,
+            date: appData.date,
+            time: appData.time,
+            userId: appData.userId,
+            status:StatusEnum.ACTIVO
+        }
+        id++;
+        appointments.push(newAppointment);
+        return newAppointment;
+    }
+    return null;
 }
 
-export const cancelAppointmentsService = async ():Promise<string>=>{
-    return "Cambiar el estatus de un turno a “cancelled”."
+export const cancelAppointmentsService = async (id:number):Promise<string | null>=>{
+    const foundApp:IAppointment | undefined = appointments.find((appointments:IAppointment)=>appointments.id === id);
+    if (foundApp) { //memoria 1
+        foundApp.status = StatusEnum.CANCELADO;
+        return "Cancelado"
+    }
+    return null
 }
