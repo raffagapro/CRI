@@ -1,34 +1,39 @@
-import UserDTO from "../../DTO/userDTO";
-import ICredential from "../../interfaces/ICredential";
-import IUser from "../../interfaces/IUser"
+import UserDTO, { UserResponseDTO } from "../../DTO/userDTO";
+import { AppDataSource } from "../../config/data-source";
+import { CredentialEntity } from "../../entities/CredentialEntity";
+import { UserEntity } from "../../entities/UserEntity";
 import { createUserCredentials } from "../credential/credentialServices";
-//DB falsa
-const users:IUser[] =[]
-let id = 0;
 
-export const getUsersService = async ():Promise<IUser[]>=>{
+export const UserModel = AppDataSource.getRepository(UserEntity);
+
+export const getUsersService = async ():Promise<UserEntity[]> =>{
+    const users = await UserModel.find({
+        relations:{ 
+            credential:true,
+            appointments:true
+        }
+    });
     return users;
 }
 
-export const getUserService = async (id:number):Promise<IUser| undefined>=>{
-    //buscamos al user con el user
-    // const foundUser:IUser | undefined = Users.find((user:IUser)=>user.id === id );
-    return users.find((user:IUser)=>user.id === id);
+export const getUserService = async (id:number):Promise<UserEntity | null> =>{
+    return await UserModel.findOneBy({id});
 }
 
-export const createUsersService = async (userData:UserDTO):Promise<IUser>=>{
-    const newCredsID:number = await createUserCredentials(userData.username, userData.password);
-    const newUser:IUser = {
-        id,
-        name:userData.name,
-        email:userData.email,
-        birthdate: userData.birthdate,
-        nDni: userData.nDni,
-        credentialsId:newCredsID
-    }
-    id++;
-    users.push(newUser);
-    return newUser;
+export const createUsersService = async (userData:UserDTO):Promise<UserResponseDTO>=>{
+    const newCredsID:CredentialEntity = await createUserCredentials(userData.username, userData.password);
+    const newUser:UserEntity =  await UserModel.create(userData);
+    newUser.credential = newCredsID;
+    newCredsID.user = newUser;
+    await UserModel.save(newUser);
+    return {
+        id:newUser.id,
+        name:newUser.name,
+        email:newUser.email,
+        birthdate:newUser.birthdate,
+        nDni:newUser.nDni,
+        credentialsId:newUser.credential.id,
+    };
 }
 
 export const loginUsersService = async ():Promise<string>=>{

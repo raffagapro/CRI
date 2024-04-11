@@ -1,19 +1,20 @@
 import { Request, Response } from "express";
 import { createUsersService, getUserService, getUsersService, loginUsersService } from "../services/users/userServices";
-import IUser from "../interfaces/IUser";
+import { UserEntity } from "../entities/UserEntity";
+import { UserResponseDTO } from "../DTO/userDTO";
 
 export const getUsers = async (req: Request, res: Response)=>{
-    const users:IUser[] = await getUsersService();
+    const users:UserEntity[] = await getUsersService();
     res.send(users);
 }
 
 export const getUser = async (req: Request, res: Response)=>{
-    const user:IUser | undefined = await getUserService(+req.params.id);
+    const user:UserEntity | null = await getUserService(+req.params.id);
     res.send(user);
 }
 
 export const createUsers = async (req: Request, res: Response)=>{
-    const newUser:IUser = await createUsersService(req.body);
+    const newUser:UserResponseDTO = await createUsersService(req.body);
     res.send(newUser);
 }
 

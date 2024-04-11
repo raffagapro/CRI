@@ -1,11 +1,16 @@
 "use strict";
-// eslint-disable-next-line
-let num4 = 1;
-// eslint-disable-next-line
-let num5 = 7;
-console.log(num4 === num5);
-function hello(num, authToken) {
-    console.log(num, authToken);
-    //implicitamente siempre es return void
-    return num;
-}
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const data_source_1 = require("./config/data-source");
+const envs_1 = require("./config/envs");
+const server_1 = __importDefault(require("./server"));
+require("reflect-metadata");
+data_source_1.AppDataSource.initialize().then(res => {
+    console.log(`Database connection established...`);
+    server_1.default.listen(envs_1.PORT, () => {
+        //logica para levantamiento de BD, modelos, etc
+        console.log(`Server listening to port ${envs_1.PORT}`);
+    });
+});

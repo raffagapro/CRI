@@ -7,4 +7,13 @@ interface UserDTO {
     password:string;
 }
 
+export interface UserResponseDTO {
+    id:number;
+    name:string;
+    email:string;
+    birthdate:Date;
+    nDni:string;
+    credentialsId:number;
+}
+
 export default UserDTO;
