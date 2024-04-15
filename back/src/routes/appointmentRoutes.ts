@@ -8,7 +8,7 @@ const appointmentRouter:Router = Router();
 appointmentRouter.get('/appointments', getAppointments);
 //Obtener el detalle de un turno específico.
 //id por query
-appointmentRouter.get('/appointment', getAppointment);
+appointmentRouter.get('/appointment', getAppointment); //se va mandar por query
 //Agendar un nuevo turno.
 appointmentRouter.post('/appointment/schedule', scheduleAppointment);
 //Cambiar el estatus de un turno a “cancelled”.
