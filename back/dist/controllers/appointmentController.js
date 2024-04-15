@@ -17,13 +17,19 @@ const getAppointments = (req, res) => __awaiter(void 0, void 0, void 0, function
 });
 exports.getAppointments = getAppointments;
 const getAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const appointment = yield (0, appointmentServices_1.getAppointmentService)(+req.params.id);
-    res.send(appointment);
+    if (req.query.id) {
+        console.log(+req.query.id);
+        const appointment = yield (0, appointmentServices_1.getAppointmentService)(+req.query.id);
+        return res.send(appointment);
+    }
+    res.status(400).send({ message: `missing id` });
 });
 exports.getAppointment = getAppointment;
 const scheduleAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const newAppointment = yield (0, appointmentServices_1.scheduleAppointmentsService)(req.body);
-    res.send(newAppointment);
+    if (newAppointment)
+        return res.send(newAppointment);
+    res.status(400).send({ message: `user not found` });
 });
 exports.scheduleAppointment = scheduleAppointment;
 const cancelAppointment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

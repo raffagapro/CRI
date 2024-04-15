@@ -8,15 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginUsersService = exports.createUsersService = exports.getUserService = exports.getUsersService = void 0;
-const CredentialEntity_1 = require("../../entities/CredentialEntity");
-const UserEntity_1 = require("../../entities/UserEntity");
+const userRepository_1 = __importDefault(require("../../repositories/userRepository"));
 const credentialServices_1 = require("../credential/credentialServices");
 const getUsersService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield UserEntity_1.UserModel.find({
+    const users = yield userRepository_1.default.find({
         relations: {
-            credential: true,
             appointments: true
         }
     });
@@ -24,17 +25,26 @@ const getUsersService = () => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.getUsersService = getUsersService;
 const getUserService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield UserEntity_1.UserModel.createQueryBuilder('user').innerJoinAndSelect('user.credential', 'credentials').getOne();
+    return yield userRepository_1.default.findOne({
+        where: { id },
+        relations: ["appointments"]
+    });
 });
 exports.getUserService = getUserService;
 const createUsersService = (userData) => __awaiter(void 0, void 0, void 0, function* () {
     const newCredsID = yield (0, credentialServices_1.createUserCredentials)(userData.username, userData.password);
-    const newUser = yield UserEntity_1.UserModel.create(userData);
+    const newUser = yield userRepository_1.default.create(userData);
     newUser.credential = newCredsID;
     newCredsID.user = newUser;
-    yield UserEntity_1.UserModel.save(newUser);
-    yield CredentialEntity_1.CredentialModel.save(newCredsID);
-    return newUser;
+    yield userRepository_1.default.save(newUser);
+    return {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        birthdate: newUser.birthdate,
+        nDni: newUser.nDni,
+        credentialsId: newUser.credential.id,
+    };
 });
 exports.createUsersService = createUsersService;
 const loginUsersService = () => __awaiter(void 0, void 0, void 0, function* () {

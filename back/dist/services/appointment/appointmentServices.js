@@ -8,36 +8,38 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.cancelAppointmentsService = exports.scheduleAppointmentsService = exports.getAppointmentService = exports.getAppointmentsService = void 0;
 const AppointmentEntity_1 = require("../../entities/AppointmentEntity");
+const appointmentRepository_1 = __importDefault(require("../../repositories/appointmentRepository"));
 const userServices_1 = require("../users/userServices");
 const getAppointmentsService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const appointments = AppointmentEntity_1.AppointmentModel.find({
+    const appointments = appointmentRepository_1.default.find({
         relations: { user: true }
     });
     return appointments;
 });
 exports.getAppointmentsService = getAppointmentsService;
 const getAppointmentService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield AppointmentEntity_1.AppointmentModel.findOneBy({
-        id
+    return yield appointmentRepository_1.default.findOne({
+        relations: { user: true },
+        where: { id }
     });
 });
 exports.getAppointmentService = getAppointmentService;
-// .createQueryBuilder("photo")
-//     .innerJoinAndSelect("photo.metadata", "metadata")
-//     .getMany()
 const scheduleAppointmentsService = (appData) => __awaiter(void 0, void 0, void 0, function* () {
     const userFound = yield (0, userServices_1.getUserService)(appData.userId);
     if (userFound) {
-        const newAppointment = yield AppointmentEntity_1.AppointmentModel.create({
+        const newAppointment = yield appointmentRepository_1.default.create({
             date: appData.date,
             time: appData.time,
             status: AppointmentEntity_1.StatusEnum.ACTIVO,
             user: userFound
         });
-        yield AppointmentEntity_1.AppointmentModel.save(newAppointment);
+        yield appointmentRepository_1.default.save(newAppointment);
         return newAppointment;
     }
     return null;

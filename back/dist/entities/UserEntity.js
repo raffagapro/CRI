@@ -9,9 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserModel = exports.UserEntity = void 0;
+exports.UserEntity = void 0;
 const typeorm_1 = require("typeorm");
-const data_source_1 = require("../config/data-source");
 const CredentialEntity_1 = require("./CredentialEntity");
 const AppointmentEntity_1 = require("./AppointmentEntity");
 let UserEntity = class UserEntity {
@@ -52,4 +51,3 @@ exports.UserEntity = UserEntity = __decorate([
         name: "users" //explicitamente indicando el nombre de la tabla
     })
 ], UserEntity);
-exports.UserModel = data_source_1.AppDataSource.getRepository(UserEntity);

@@ -9,10 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.StatusEnum = exports.AppointmentModel = exports.AppointmentEntity = void 0;
+exports.StatusEnum = exports.AppointmentEntity = void 0;
 const typeorm_1 = require("typeorm");
 const UserEntity_1 = require("./UserEntity");
-const data_source_1 = require("../config/data-source");
 let AppointmentEntity = class AppointmentEntity {
 };
 exports.AppointmentEntity = AppointmentEntity;
@@ -42,7 +41,6 @@ exports.AppointmentEntity = AppointmentEntity = __decorate([
         name: "appointments" //explicitamente indicando el nombre de la tabla
     })
 ], AppointmentEntity);
-exports.AppointmentModel = data_source_1.AppDataSource.getRepository(AppointmentEntity);
 var StatusEnum;
 (function (StatusEnum) {
     StatusEnum["ACTIVO"] = "active";

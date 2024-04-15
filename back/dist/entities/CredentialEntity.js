@@ -9,10 +9,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CredentialModel = exports.CredentialEntity = void 0;
+exports.CredentialEntity = void 0;
 const typeorm_1 = require("typeorm");
 const UserEntity_1 = require("./UserEntity");
-const data_source_1 = require("../config/data-source");
 let CredentialEntity = class CredentialEntity {
 };
 exports.CredentialEntity = CredentialEntity;
@@ -38,4 +37,3 @@ exports.CredentialEntity = CredentialEntity = __decorate([
         name: "credentials" //explicitamente indicando el nombre de la tabla
     })
 ], CredentialEntity);
-exports.CredentialModel = data_source_1.AppDataSource.getRepository(CredentialEntity);

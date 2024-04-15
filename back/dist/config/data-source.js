@@ -16,7 +16,7 @@ exports.AppDataSource = new typeorm_1.DataSource({
     //recrea las tables con el levantamiento
     dropSchema: true,
     synchronize: true,
-    logging: true,
+    logging: ["error"],
     //modelos creados
     entities: [UserEntity_1.UserEntity, AppointmentEntity_1.AppointmentEntity, CredentialEntity_1.CredentialEntity],
     subscribers: [],

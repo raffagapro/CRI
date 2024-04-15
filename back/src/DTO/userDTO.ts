@@ -14,6 +14,7 @@ export interface UserResponseDTO {
     birthdate:Date;
     nDni:string;
     credentialsId:number;
+    login:boolean;
 }
 
 export default UserDTO;
