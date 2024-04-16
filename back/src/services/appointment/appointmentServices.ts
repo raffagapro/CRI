@@ -3,22 +3,18 @@ import { AppDataSource } from "../../config/data-source";
 import { AppointmentEntity, StatusEnum } from "../../entities/AppointmentEntity";
 import { UserEntity } from "../../entities/UserEntity";
 import IAppointment from "../../interfaces/IAppointment";
+import AppointmentRespository from "../../repositories/appointmentServices";
 import { getUserService } from "../users/userServices";
 
-//DB falsa
-// const appointments:IAppointment[] =[]
-// let id = 0;
-export const AppointmentModel = AppDataSource.getRepository(AppointmentEntity);
-
 export const getAppointmentsService = async ():Promise<AppointmentEntity[]>=>{
-    const appointments = AppointmentModel.find({
+    const appointments = AppointmentRespository.find({
         relations:{ user:true }
     });
     return appointments;
 }
 
 export const getAppointmentService = async (id:number):Promise<AppointmentEntity| null>=>{
-    return AppointmentModel.findOne({
+    return AppointmentRespository.findOne({
         relations:{user:true},
         where:{id}
     });
@@ -28,23 +24,23 @@ export const getAppointmentService = async (id:number):Promise<AppointmentEntity
 export const scheduleAppointmentsService = async (appData:AppointmentDTO):Promise<AppointmentEntity | null>=>{
     const userFound:UserEntity | null = await getUserService(appData.userId);
     if (userFound) {
-        const newAppointment:AppointmentEntity = AppointmentModel.create({
+        const newAppointment:AppointmentEntity = AppointmentRespository.create({
             date: appData.date,
             time: appData.time,
             status: StatusEnum.ACTIVO,
             user:userFound
         });
-        await AppointmentModel.save(newAppointment);
+        await AppointmentRespository.save(newAppointment);
         return newAppointment;
     }
     return null;
 }
 
-export const cancelAppointmentsService = async (id:number):Promise<string | null>=>{
+export const cancelAppointmentsService = async (id:number):Promise<number | null>=>{
     const foundApp:AppointmentEntity | null = await getAppointmentService(id);
     if (foundApp) { //memoria 1
         foundApp.status = StatusEnum.CANCELADO;
-        return "Cancelado"
+        return foundApp.id
     }
     return null
 }

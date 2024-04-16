@@ -7,6 +7,17 @@ export interface UserResponseDTO {
     credentialsId:number;
 }
 
+export interface UserAuthResponseDTO {
+    login: boolean;
+    user:{
+        id:number;
+        name:string;
+        email:string;
+        birthdate:Date;
+        nDni:string;
+    }
+}
+
 interface UserDTO {
     name:string;
     email:string;

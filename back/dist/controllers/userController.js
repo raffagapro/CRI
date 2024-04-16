@@ -18,16 +18,41 @@ const getUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getUsers = getUsers;
 const getUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield (0, userServices_1.getUserService)(+req.params.id);
-    res.send(user);
+    if (user)
+        return res.send(user);
+    return res.status(404).send('User not found');
 });
 exports.getUser = getUser;
 const createUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const newUser = yield (0, userServices_1.createUsersService)(req.body);
-    res.send(newUser);
+    const { name, email, birthdate, nDni, username, password } = req.body;
+    //checamos si estan los datos
+    if (!name || !email || !birthdate || !nDni || !username || !password) {
+        return res.status(400).send("Missing required fields");
+    }
+    try {
+        const newUser = yield (0, userServices_1.createUsersService)(req.body);
+        return res.send(newUser);
+    }
+    catch (error) {
+        console.error("Error creating user:", error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 exports.createUsers = createUsers;
 const loginUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const message = yield (0, userServices_1.loginUsersService)();
-    res.send(message);
+    try {
+        const { username, password } = req.body;
+        if (!username || !password) {
+            return res.status(400).send("Missing required fields");
+        }
+        const userAuthed = yield (0, userServices_1.loginUsersService)(username, password);
+        if (userAuthed)
+            return res.send(userAuthed);
+        return res.status(400).send("Login failed");
+    }
+    catch (error) {
+        console.error("Error creating user:", error);
+        res.status(500).send("Internal Server Error");
+    }
 });
 exports.loginUsers = loginUsers;

@@ -8,34 +8,45 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUsersService = exports.createUsersService = exports.getUserService = exports.getUsersService = exports.UserModel = void 0;
-const data_source_1 = require("../../config/data-source");
-const UserEntity_1 = require("../../entities/UserEntity");
+exports.loginUsersService = exports.createUsersService = exports.getUserService = exports.getUsersService = void 0;
+const userRepository_1 = __importDefault(require("../../repositories/userRepository"));
 const credentialServices_1 = require("../credential/credentialServices");
-//DB falsa
-// const users:IUser[] =[]
-// let id = 0;
-exports.UserModel = data_source_1.AppDataSource.getRepository(UserEntity_1.UserEntity);
 const getUsersService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield exports.UserModel.find();
+    const users = yield userRepository_1.default.find();
     return users;
 });
 exports.getUsersService = getUsersService;
 const getUserService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield exports.UserModel.findOneBy({ id });
+    return yield userRepository_1.default.findOne({
+        where: { id },
+        relations: ["appointments"]
+    });
 });
 exports.getUserService = getUserService;
 const createUsersService = (userData) => __awaiter(void 0, void 0, void 0, function* () {
     const newCredsID = yield (0, credentialServices_1.createUserCredentials)(userData.username, userData.password);
-    const newUser = yield exports.UserModel.create(userData);
+    const newUser = yield userRepository_1.default.create(userData);
     newUser.credential = newCredsID;
     newCredsID.user = newUser;
-    exports.UserModel.save(newUser);
-    return newUser;
+    userRepository_1.default.save(newUser);
+    return {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        birthdate: newUser.birthdate,
+        nDni: newUser.nDni,
+        credentialsId: newUser.credential.id,
+    };
 });
 exports.createUsersService = createUsersService;
-const loginUsersService = () => __awaiter(void 0, void 0, void 0, function* () {
-    return "Login del usuario a la aplicación.";
+const loginUsersService = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
+    //validar la credenciales
+    //encontrar al user
+    //empaquetar la respuesta
+    return yield (0, credentialServices_1.verifyUserCredentials)(username, password);
 });
 exports.loginUsersService = loginUsersService;

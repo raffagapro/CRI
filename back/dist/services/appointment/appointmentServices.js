@@ -8,24 +8,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.cancelAppointmentsService = exports.scheduleAppointmentsService = exports.getAppointmentService = exports.getAppointmentsService = exports.AppointmentModel = void 0;
-const data_source_1 = require("../../config/data-source");
+exports.cancelAppointmentsService = exports.scheduleAppointmentsService = exports.getAppointmentService = exports.getAppointmentsService = void 0;
 const AppointmentEntity_1 = require("../../entities/AppointmentEntity");
+const appointmentServices_1 = __importDefault(require("../../repositories/appointmentServices"));
 const userServices_1 = require("../users/userServices");
-//DB falsa
-// const appointments:IAppointment[] =[]
-// let id = 0;
-exports.AppointmentModel = data_source_1.AppDataSource.getRepository(AppointmentEntity_1.AppointmentEntity);
 const getAppointmentsService = () => __awaiter(void 0, void 0, void 0, function* () {
-    const appointments = exports.AppointmentModel.find({
+    const appointments = appointmentServices_1.default.find({
         relations: { user: true }
     });
     return appointments;
 });
 exports.getAppointmentsService = getAppointmentsService;
 const getAppointmentService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    return exports.AppointmentModel.findOne({
+    return appointmentServices_1.default.findOne({
         relations: { user: true },
         where: { id }
     });
@@ -34,13 +33,13 @@ exports.getAppointmentService = getAppointmentService;
 const scheduleAppointmentsService = (appData) => __awaiter(void 0, void 0, void 0, function* () {
     const userFound = yield (0, userServices_1.getUserService)(appData.userId);
     if (userFound) {
-        const newAppointment = exports.AppointmentModel.create({
+        const newAppointment = appointmentServices_1.default.create({
             date: appData.date,
             time: appData.time,
             status: AppointmentEntity_1.StatusEnum.ACTIVO,
             user: userFound
         });
-        yield exports.AppointmentModel.save(newAppointment);
+        yield appointmentServices_1.default.save(newAppointment);
         return newAppointment;
     }
     return null;

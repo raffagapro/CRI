@@ -8,33 +8,41 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyUserCredentials = exports.createUserCredentials = exports.CredentialModel = void 0;
-const data_source_1 = require("../../config/data-source");
-const CredentialEntity_1 = require("../../entities/CredentialEntity");
-//emulacion de info en DB
-// const Creds:ICredential[] = [];
-// let id:number = 0;
-exports.CredentialModel = data_source_1.AppDataSource.getRepository(CredentialEntity_1.CrendentialEntity);
+exports.verifyUserCredentials = exports.createUserCredentials = void 0;
+const credentialsRepository_1 = __importDefault(require("../../repositories/credentialsRepository"));
 const createUserCredentials = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
     //crea new creds
-    const newCreds = exports.CredentialModel.create({
+    const newCreds = credentialsRepository_1.default.create({
         username,
         password
     });
-    yield exports.CredentialModel.save(newCreds);
+    yield credentialsRepository_1.default.save(newCreds);
     return newCreds;
 });
 exports.createUserCredentials = createUserCredentials;
 const verifyUserCredentials = (username, password) => __awaiter(void 0, void 0, void 0, function* () {
     //buscamos al user con el username
-    const foundUserCredentials = yield exports.CredentialModel.findOne({
-        where: { username }
+    const foundUserCredentials = yield credentialsRepository_1.default.findOne({
+        where: { username },
+        relations: { user: true }
     });
     //revisamos si encontramos algo
     if (foundUserCredentials) {
         if (foundUserCredentials.password === password)
-            return foundUserCredentials.user.id;
+            return {
+                login: true,
+                user: {
+                    id: foundUserCredentials.user.id,
+                    name: foundUserCredentials.user.name,
+                    email: foundUserCredentials.user.email,
+                    birthdate: foundUserCredentials.user.birthdate,
+                    nDni: foundUserCredentials.user.nDni
+                }
+            };
     }
     return null;
 });

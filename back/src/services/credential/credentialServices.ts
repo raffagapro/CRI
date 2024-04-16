@@ -1,30 +1,38 @@
-import { AppDataSource } from "../../config/data-source";
+import { UserAuthResponseDTO } from "../../DTO/userDTO";
 import { CrendentialEntity } from "../../entities/CredentialEntity";
-import ICredential from "../../interfaces/ICredential";
-
-//emulacion de info en DB
-// const Creds:ICredential[] = [];
-// let id:number = 0;
-export const CredentialModel = AppDataSource.getRepository(CrendentialEntity);
+import { UserEntity } from "../../entities/UserEntity";
+import CredentialRespository from "../../repositories/credentialsRepository";
 
 export const createUserCredentials = async (username:string, password:string):Promise<CrendentialEntity>=>{
     //crea new creds
-    const newCreds:CrendentialEntity= CredentialModel.create({
+    const newCreds:CrendentialEntity= CredentialRespository.create({
         username,
         password
     });
-    await CredentialModel.save(newCreds);
+    await CredentialRespository.save(newCreds);
     return newCreds;
 }
 
-export const verifyUserCredentials = async (username:string, password:string):Promise<number | null>=>{
+export const verifyUserCredentials = async (username:string, password:string):Promise<UserAuthResponseDTO | null>=>{
     //buscamos al user con el username
-    const foundUserCredentials:CrendentialEntity | null = await CredentialModel.findOne({
-        where:{ username}
+    const foundUserCredentials:CrendentialEntity | null = await CredentialRespository.findOne({
+        where:{ username},
+        relations:{ user:true}
     })
+    console.log(foundUserCredentials);
+    
     //revisamos si encontramos algo
     if (foundUserCredentials) {
-        if (foundUserCredentials.password === password) return foundUserCredentials.user.id;
+        if (foundUserCredentials.password === password) return {
+            login:true,
+            user:{
+                id: foundUserCredentials.user.id,
+                name: foundUserCredentials.user.name,
+                email: foundUserCredentials.user.email,
+                birthdate: foundUserCredentials.user.birthdate,
+                nDni: foundUserCredentials.user.nDni
+            }
+        }
     }
     return null;
 }

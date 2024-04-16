@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, OneToMany } from "typeorm"
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, OneToMany, BeforeUpdate } from "typeorm"
 import { CrendentialEntity } from "./CredentialEntity";
 import { AppointmentEntity } from "./AppointmentEntity";
 
@@ -12,7 +12,7 @@ export class UserEntity {
     @Column()
     name: string
 
-    @Column()
+    @Column({ unique: true }) // Make email column unique
     email: string
 
     @Column("date")
@@ -27,4 +27,11 @@ export class UserEntity {
 
     @OneToMany(() => AppointmentEntity, app => app.user)
     appointments: AppointmentEntity[]
+
+    @BeforeUpdate()
+    validateEmailFormat() {
+        if (!this.email.match(/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/)) {
+            throw new Error("Invalid email format");
+        }
+    }
 }

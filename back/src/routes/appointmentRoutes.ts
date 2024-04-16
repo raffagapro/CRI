@@ -12,7 +12,7 @@ appointmentRouter.get('/appointment', getAppointment); //se va mandar por query
 //Agendar un nuevo turno.
 appointmentRouter.post('/appointment/schedule', scheduleAppointment);
 //Cambiar el estatus de un turno a “cancelled”.
-appointmentRouter.put('/appointment/cancelar', cancelAppointment);
+appointmentRouter.put('/appointment/cancelar/:id', cancelAppointment);
 
 
 export default appointmentRouter;
