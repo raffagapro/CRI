@@ -1,0 +1,16 @@
+.sideBar{
+    background-color: #3C5B6F;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.bigLogo{
+width: 90%;
+}
+
+.mainBar{
+    display: flex;
+    align-items: center;
+    padding-left: 10%;
+}
