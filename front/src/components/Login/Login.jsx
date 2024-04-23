@@ -1,20 +1,57 @@
-import styled from 'styled-components';
+/* eslint-disable react/prop-types */
+// import styled from 'styled-components';
 
-const StyledH1 = styled.h1`
-    background-color: #007bff; /* Blue */
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    border-radius: 5px;
-`
+import { useState } from "react";
 
-function Login(props) {
+function Login({login}) {
+    const [input, setInput] = useState({
+        username:'',
+        password:''
+    });
+
+    const handleChange = (e)=>{
+        setInput({
+            ...input,
+            [e.target.name]:e.target.value
+        })
+    }
+
+    const handleSubmit = (e)=>{
+        e.preventDefault()
+        login(input)
+    }
+
     return(
-        <StyledH1>Login</StyledH1>
+        <form className="row g-3 mt-4">
+            <div className="col-auto">
+                <input 
+                    type="text" 
+                    className="form-control" 
+                    name="username" 
+                    placeholder="email@example.com"
+                    onChange={handleChange}
+                    value={input.username}
+                />
+            </div>
+            <div className="col-auto">
+                <input 
+                    type="password" 
+                    className="form-control" 
+                    name="password" 
+                    placeholder="Password"
+                    onChange={handleChange}
+                    value={input.password}
+                />
+            </div>
+            <div className="col-auto">
+                <button
+                    type="submit"
+                    className="btn btn-primary mb-3"
+                    onClick={handleSubmit}
+                >Login</button>
+            </div>
+            <p className="text-center">Not a member? Register now!</p>
+        </form>
     )
 }
 
