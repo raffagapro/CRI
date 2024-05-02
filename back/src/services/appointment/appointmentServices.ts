@@ -40,6 +40,7 @@ export const cancelAppointmentsService = async (id:number):Promise<number | null
     const foundApp:AppointmentEntity | null = await getAppointmentService(id);
     if (foundApp) { //memoria 1
         foundApp.status = StatusEnum.CANCELADO;
+        await AppointmentRespository.save(foundApp);
         return foundApp.id
     }
     return null

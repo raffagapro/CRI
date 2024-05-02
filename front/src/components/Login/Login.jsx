@@ -3,7 +3,7 @@
 
 import { useState } from "react";
 
-function Login({login}) {
+function Login({onlogin}) {
     const [input, setInput] = useState({
         username:'',
         password:''
@@ -18,12 +18,13 @@ function Login({login}) {
 
     const handleSubmit = (e)=>{
         e.preventDefault()
-        login(input)
+        onlogin(input);
     }
 
     return(
         <form className="row g-3 mt-4">
             <div className="col-auto">
+                {/* USERNAME */}
                 <input 
                     type="text" 
                     className="form-control" 

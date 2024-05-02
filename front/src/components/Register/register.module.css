@@ -1,0 +1,6 @@
+.warning {
+    border: solid red 5px;
+    background-color: rgba(165, 42, 42, 0.409);
+    border-radius: 0.2em;
+    color: red;
+}

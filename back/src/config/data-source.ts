@@ -12,8 +12,8 @@ export const AppDataSource = new DataSource({
     password: DB_PASSWORD,
     database: DB_NAME, //DB tiene que etsra ya creada
     //recrea las tables con el levantamiento
-    dropSchema: true,
-    synchronize: true,
+    // dropSchema: true,
+    // synchronize: true,
     logging: ['error'],
     entities: [UserEntity, CrendentialEntity, AppointmentEntity],
     subscribers: [],

@@ -10,7 +10,10 @@ export const getUsers = async (req: Request, res: Response)=>{
 }
 
 export const getUser = async (req: Request, res: Response)=>{
-    const user:UserEntity | null = await getUserService(+req.params.id);
+    const { id } = req.params
+    console.log('id de getuser', id);
+    if (!req.params.id) return res.status(402).send("Missing id");
+    const user:UserEntity | null = await getUserService(+id);
     if (user) return res.send(user);
     return res.status(404).send('User not found');
 }
