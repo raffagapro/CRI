@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
-// import styled from 'styled-components';
-
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 function Login({onlogin}) {
     const [input, setInput] = useState({
@@ -51,7 +50,7 @@ function Login({onlogin}) {
                     onClick={handleSubmit}
                 >Login</button>
             </div>
-            <p className="text-center">Not a member? Register now!</p>
+            <p className="text-center">Not a member? <Link to='/register'>Register now!</Link></p>
         </form>
     )
 }

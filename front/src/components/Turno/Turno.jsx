@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-const Turno = ({data, fName})=>{
+const Turno = ({data, fName, onCancelAppointment})=>{
     return(
         <>
         <div className="card text-end">
@@ -9,7 +9,7 @@ const Turno = ({data, fName})=>{
                 <span className="badge text-bg-success">Activo</span>:
                 <span className="badge text-bg-danger">Cancelled</span>}
                 <p className="card-text">{`Date:${data.date} Time:${data.time}`}</p>
-                <a href="#" className="btn btn-danger">Cancelar Turno</a>
+                <button onClick={()=>onCancelAppointment(data.id)} className="btn btn-danger">Cancelar Turno</button>
             </div>
         </div>
 

@@ -1,25 +1,31 @@
-function Navbar(){
+import { Link } from "react-router-dom";
+
+/* eslint-disable react/prop-types */
+function Navbar({onLogout}){
 
     return(
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
-                <a className="navbar-brand" href="#">Navbar</a>
+                <Link to='/'>
+                    <span className="navbar-brand" >Home</span>
+                </Link>
+                
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarNav">
-                <ul className="navbar-nav">
+                <ul className="navbar-nav justify-content-end">
+                    {/* SCHEDULE APPOINTMENT */}
                     <li className="nav-item">
-                    <a className="nav-link active" aria-current="page" href="#">Home</a>
+                        <Link className="nav-link" aria-current="page" to="/appointments/schedule">Schedule App</Link>
                     </li>
+                    {/* MIS TURNOS */}
                     <li className="nav-item">
-                    <a className="nav-link" href="#">Features</a>
+                        <Link className="nav-link" to='/appointments'>Appointments</Link>
                     </li>
+                    {/* LOGOUT */}
                     <li className="nav-item">
-                    <a className="nav-link" href="#">Pricing</a>
-                    </li>
-                    <li className="nav-item">
-                    <a className="nav-link disabled" aria-disabled="true">Disabled</a>
+                        <button className="nav-link" onClick={onLogout}>Logout</button>
                     </li>
                 </ul>
                 </div>
