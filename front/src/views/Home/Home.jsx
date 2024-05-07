@@ -3,6 +3,7 @@ import logo from '../../assets/logowhite.png';
 import Login from '../../components/Login/Login';
 import Profile from '../../components/Profile/Profile';
 import styles from './Home.module.css';
+import { useSelector } from 'react-redux';
 
 const { 
     sideBar,
@@ -10,7 +11,9 @@ const {
     mainBar
 } = styles
 
-function Home({session, onlogin }) {
+function Home() {
+    const login = useSelector((state)=>state.user.login);
+    
     return(<>
             {/* side bar con logo */}
             <div className={`col ${sideBar}`}>
@@ -18,10 +21,7 @@ function Home({session, onlogin }) {
             </div>
             {/* contenido dinamico */}
             <div className={`col-8 justify-content-center ${mainBar}`}>
-                {session.login ? <Profile user={session.user}/> : <Login onlogin={onlogin}/>}
-                {/* {session.login ? <Turnos userId={session.user.id}/> : <Login onlogin={onlogin}/>} */}
-
-                
+                {login ? <Profile /> : <Login />}
             </div>
         </>)
 }

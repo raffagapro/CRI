@@ -1,8 +1,11 @@
 /* eslint-disable react/prop-types */
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { login } from "../../redux/userReducer";
 
-function Login({onlogin}) {
+function Login() {
+    const dispatch = useDispatch();
     const [input, setInput] = useState({
         username:'',
         password:''
@@ -17,7 +20,7 @@ function Login({onlogin}) {
 
     const handleSubmit = (e)=>{
         e.preventDefault()
-        onlogin(input);
+        dispatch(login(input));
     }
 
     return(

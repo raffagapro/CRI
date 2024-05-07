@@ -1,7 +1,10 @@
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { login } from "../../redux/userReducer";
 
 /* eslint-disable react/prop-types */
 function Navbar({onLogout}){
+    const dispatch = useDispatch();
 
     return(
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -23,6 +26,11 @@ function Navbar({onLogout}){
                     <li className="nav-item">
                         <Link className="nav-link" to='/appointments'>Appointments</Link>
                     </li>
+                    {/* test */}
+                    <li className="nav-item">
+                        <button className="nav-link" onClick={()=>dispatch(login({login:true, user:'chris'}))}>Test</button>
+                    </li>
+
                     {/* LOGOUT */}
                     <li className="nav-item">
                         <button className="nav-link" onClick={onLogout}>Logout</button>
