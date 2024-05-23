@@ -1,10 +1,14 @@
 /* eslint-disable react/prop-types */
-const Turno = ({data, fName, onCancelAppointment})=>{
+import { useSelector } from "react-redux";
+
+const Turno = ({data, onCancelAppointment})=>{
+    const user = useSelector((state)=>state.user.user);
+
     return(
         <>
         <div className="card text-end">
             <div className="card-body">
-                <h5 className="card-title">{fName}</h5>
+                <h5 className="card-title">{`${user.name}(${data.id})`}</h5>
                 {data.status !== "cancel" ?
                 <span className="badge text-bg-success">Activo</span>:
                 <span className="badge text-bg-danger">Cancelled</span>}

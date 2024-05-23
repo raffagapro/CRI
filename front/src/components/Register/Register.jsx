@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import validation from "./validation";
 import styles from './register.module.css';
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { userServices } from "../services/apiServices";
 const { warning } = styles;
 
 function Register() {
@@ -16,6 +17,8 @@ function Register() {
     });
 
     const [errors, setErrors] = useState({});
+
+    const navigate = useNavigate();
 
     const handleChange = (e)=>{
         //validamos
@@ -33,14 +36,8 @@ function Register() {
 
     const handleSubmit = (e)=>{
         e.preventDefault()
-        const url = `http://localhost:3000/users/register`;
-        axios.post(url, input).then(resp=>{
-            try {
-                if (resp.data) console.log(resp.data);
-            } catch (error) {
-                alert(error.response.data.message)
-            }
-        });
+        //fix redirect when register failed!!!!
+        userServices('/users/register', input) && navigate('/');
     }
 
     useEffect(()=>{

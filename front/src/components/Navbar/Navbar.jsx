@@ -1,10 +1,17 @@
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { login } from "../../redux/userReducer";
+import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../../redux/userReducer";
 
 /* eslint-disable react/prop-types */
-function Navbar({onLogout}){
+function Navbar(){
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const onLogout = ()=>{
+        dispatch(logout());
+        navigate('/');
+    }
+
 
     return(
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
@@ -25,10 +32,6 @@ function Navbar({onLogout}){
                     {/* MIS TURNOS */}
                     <li className="nav-item">
                         <Link className="nav-link" to='/appointments'>Appointments</Link>
-                    </li>
-                    {/* test */}
-                    <li className="nav-item">
-                        <button className="nav-link" onClick={()=>dispatch(login({login:true, user:'chris'}))}>Test</button>
                     </li>
 
                     {/* LOGOUT */}

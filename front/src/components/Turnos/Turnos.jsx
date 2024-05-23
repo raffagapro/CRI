@@ -1,31 +1,24 @@
 import { useEffect, useState } from "react";
 import Turno from "../Turno/Turno";
-import axios from 'axios';
+import { useSelector } from "react-redux";
+import { cancellAppointment, getAppointments } from "../services/apiServices";
 
 /* eslint-disable react/prop-types */
-const Turnos = ({userId})=>{
+const Turnos = ()=>{
     const [turnos, setTurnos] = useState([]);
-    const [user, setUser] = useState({});
 
-    const getApps = (userId)=>{
-        const url = `http://localhost:3000/users/${userId}`;
-        axios.get(url).then(resp=>{
-            setTurnos(resp.data.appointments);
-            setUser(resp.data);
-        });
-    }
+    const user = useSelector((state)=>state.user.user);
 
     useEffect(()=>{
-        getApps(userId)
-        // setTurnosState(turnos);
+        getAppointments(user.id)
+        .then(data=>setTurnos(data.appointments));
     }, []);
 
     const onCancelAppointment = (id)=>{
-        const url = `http://localhost:3000/appointment/cancelar/${id}`;
-        axios.put(url).then(resp=>{
-            console.log(resp.data);
-            if (resp.data.message === "Appointment was cancelled") getApps(userId);
-        })
+        cancellAppointment(id).then(resp=>{
+            if (resp.message === "Appointment was cancelled") getAppointments(user.id)
+                .then(data=>setTurnos(data.appointments));
+        });
     }
 
     return(
@@ -34,7 +27,6 @@ const Turnos = ({userId})=>{
             turnos?.map((turno)=><Turno 
                 key={turno.id} 
                 data={turno} 
-                fName={user.name} 
                 onCancelAppointment={onCancelAppointment}
             />)}
         </div>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { login } from "../../redux/userReducer";
+import { userServices } from "../services/apiServices";
 
 function Login() {
     const dispatch = useDispatch();
@@ -20,7 +21,9 @@ function Login() {
 
     const handleSubmit = (e)=>{
         e.preventDefault()
-        dispatch(login(input));
+        userServices('/users/login', input)
+        .then(data => dispatch(login(data)))
+        .catch(err=>alert(`Mira Otto un error:${err}!`));
     }
 
     return(
