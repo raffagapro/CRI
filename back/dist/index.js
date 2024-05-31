@@ -1,11 +1,9 @@
 "use strict";
-// eslint-disable-next-line
-let num4 = 1;
-// eslint-disable-next-line
-let num5 = 7;
-console.log(num4 === num5);
-function hello(num, authToken) {
-    console.log(num, authToken);
-    //implicitamente siempre es return void
-    return num;
-}
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const hola = "hola Chicos";
+const server_1 = __importDefault(require("./server"));
+console.log(hola);
+console.log(server_1.default);
