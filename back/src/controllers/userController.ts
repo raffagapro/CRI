@@ -1,18 +1,22 @@
 import { Request, Response } from "express"
 import { getUsersService, getUserService, createUsersService } from "../services/userServices";
+import IUser from "../interfaces/IUser";
+import UserDTO from "../DTO/userDTO";
 
 export const getUsers = async (req: Request, res: Response) =>{
-    const message:string = await getUsersService();
+    const users:IUser[] = await getUsersService();
     //invocar varios servicios
-    res.send(message);
+    res.send(users);
 }
 
-export const getUser = async (req: Request, res: Response) =>{    
-    const message:string = await getUserService(req);
-    res.send(message);
+export const getUser = async (req: Request, res: Response) =>{
+    const { id } = req.query;   
+    const user:IUser | undefined = await getUserService(Number(id));
+    res.send(user);
 }
 
 export const createUsers = async (req: Request, res: Response) =>{
-    const message:string = await createUsersService(req);
-    res.send(message);
+    const userData: UserDTO = req.body;
+    const newUser:IUser = await createUsersService(userData);
+    res.send(newUser);
 }

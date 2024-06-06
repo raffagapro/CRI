@@ -1,22 +1,26 @@
 import { Request, Response } from "express"
 import { cancelAppointmentsService, getAppointmentService, getAppointmentsService, scheduleAppointmentsService } from "../services/appointmentServices"
+import IAppointment from "../interfaces/IAppointment";
+import AppointmentDTO from "../DTO/appointmentDTO";
 
 export const getAppointments = async(req:Request, res:Response)=>{
-    const message:string = await getAppointmentsService();
-    res.send(message)
+    const appointments:IAppointment[] = await getAppointmentsService();
+    res.send(appointments)
 }
 
 export const getAppointment = async(req:Request, res:Response)=>{
-    const message:string = await getAppointmentService(req);
-    res.send(message)
+    const foundApp:IAppointment | undefined = await getAppointmentService(req);
+    res.send(foundApp)
 }
 
 export const scheduleAppointments = async(req:Request, res:Response)=>{
-    const message:string = await scheduleAppointmentsService();
-    res.send(message)
+    const appData:AppointmentDTO = req.body;
+    const newApp:IAppointment = await scheduleAppointmentsService(appData);
+    res.send(newApp)
 }
 
 export const cancelAppointments = async(req:Request, res:Response)=>{
-    const message:string = await cancelAppointmentsService();
+ const id = Number(req.body.id)
+    const message:string | undefined = await cancelAppointmentsService(id);
     res.send(message)
 }
