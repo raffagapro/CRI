@@ -5,7 +5,7 @@ const userRouter:Router = Router();
 
 //CRUD
 //CREAR
-userRouter.post('/users', createUsers);
+userRouter.post('/users/register', createUsers);
 //LEER (READ)
 userRouter.get('/users', getUsers);
 userRouter.get('/users/:id', getUser);

@@ -1,18 +1,14 @@
-import ICredential from "../interfaces/ICredential"
+import { AppDataSource } from "../config/data-source";
+import { CredentialEntity } from "../entities/CredentialEntity";
 
-//DB falsa
-const Creds:ICredential[] = [];
-let id = 0;
+export const CredentialModel = AppDataSource.getRepository(CredentialEntity);
 
-export const createUserCredentials = async (username:string, password:string):Promise<number>=>{
+export const createUserCredentials = async (username:string, password:string):Promise<CredentialEntity>=>{
     //crear nueva cred
-    const newUserCreds:ICredential={
-        id,
+    const newUserCreds:CredentialEntity = await CredentialModel.create({
         username,
         password
-    }
-    //guardar la credencial
-    Creds.push(newUserCreds);
-    id++;
-    return newUserCreds.id;
+    });
+    await CredentialModel.save(newUserCreds);
+    return newUserCreds;
 }
