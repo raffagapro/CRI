@@ -6,7 +6,7 @@ const appointmentRouter:Router = Router();
 //get all apps
 appointmentRouter.get('/appointments', getAppointments);
 //get 1 app
-appointmentRouter.get('/appointment', getAppointment);
+appointmentRouter.get('/appointment/:id', getAppointment);
 //shcedule apps
 appointmentRouter.post('/appointment/schedule', scheduleAppointments);
 //cancel apps

@@ -12,8 +12,7 @@ export const getAppointmentsService = async ():Promise<AppointmentEntity[]>=>{
     return appointments;
 }
 
-export const getAppointmentService = async (req:Request):Promise<AppointmentEntity | null>=>{
-    const id = Number(req.query.id)
+export const getAppointmentService = async (id:number):Promise<AppointmentEntity | null>=>{
     const appointmentFound: AppointmentEntity | null = await AppointmentModel.findOneBy({id});
     return appointmentFound;
 }
@@ -28,6 +27,7 @@ export const scheduleAppointmentsService = async (appData:AppointmentDTO):Promis
             user:userFound
         });
         await AppointmentModel.save(newApp);
+        return newApp;
     }
     return null;
 }

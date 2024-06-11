@@ -1,8 +1,8 @@
 import { Request } from "express"
 import { UserEntity } from "../entities/UserEntity";
 import { CredentialEntity } from "../entities/CredentialEntity";
-import UserDTO, { UserResponseDTO } from "../DTO/userDTO";
-import { CredentialModel, createUserCredentials } from "./credentialServices";
+import UserDTO, { UserResponseDTO, UserAuthResponseDTO } from "../DTO/userDTO";
+import { CredentialModel, createUserCredentials, verifyUserCredentials } from "./credentialServices";
 import { AppDataSource } from "../config/data-source";
 
 //patron singleton
@@ -16,7 +16,10 @@ export const getUsersService = async ():Promise<UserEntity[]>=>{
 
 export const getUserService = async (id: number):Promise<UserEntity | null>=>{
     //arreglar logica para DB
-    const userFound: UserEntity | null = await UserModel.findOneBy({id});
+    const userFound: UserEntity | null = await UserModel.findOne({
+        where:{id},
+        relations:['appointments']
+    });
     return userFound;
 }
 
@@ -40,4 +43,11 @@ export const createUsersService = async (userData: UserDTO):Promise<UserResponse
         nDni:newUser.nDni,
         credentialsId:newUser.credential.id
     };
+}
+
+export const loginUsersService = async (username:string, password:string):Promise<UserAuthResponseDTO | null>=>{
+    //validar la credenciales
+    //encontrar al user
+    //empaquetar la respuesta
+    return await verifyUserCredentials(username, password);
 }
