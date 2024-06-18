@@ -1,9 +1,14 @@
 import FormInput from "../FormInput/FormInput";
 
 // eslint-disable-next-line react/prop-types
-function Form({ title }) {
+function Form({ title, handleLogin }) {
+
+    const handleSubmit = (e)=>{
+        e.preventDefault()
+        handleLogin()
+    }
     return(
-        <form>
+        <form onSubmit={handleSubmit}>
             <h3>{title}</h3>
             <div className="form-group">
                 <FormInput 

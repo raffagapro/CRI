@@ -1,4 +1,5 @@
-function Navbar() {
+/* eslint-disable react/prop-types */
+function Navbar({onLogout}) {
     return(
         <nav className="navbar navbar-light bg-light">
             <a className="navbar-brand" href="#">
@@ -6,15 +7,12 @@ function Navbar() {
                 Home
             </a>
             <a className="navbar-brand" href="#">
-                Logout
-            </a>
-            <a className="navbar-brand" href="#">
                 Schedule Appointment
             </a>
             <a className="navbar-brand" href="#">
                 About
             </a>
-            <a className="navbar-brand" href="#">
+            <a className="navbar-brand" href="#" onClick={onLogout}>
                 Logout
             </a>
         </nav>
