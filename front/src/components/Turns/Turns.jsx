@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 import Turno from "../Turn/Turn";
-function Turns({ turnos }) {
+function Turns({ turnos, name }) {
     return(
         <table className="table">
             <thead>
@@ -14,7 +14,7 @@ function Turns({ turnos }) {
             </thead>
             <tbody>
                 {turnos.map(turno => 
-                    <Turno key={turno.id} data={turno}/>
+                    <Turno key={turno.id} data={turno} name={name}/>
                 )}
             </tbody>
         </table>
