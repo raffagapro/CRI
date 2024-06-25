@@ -12,13 +12,13 @@ const {
     main
 } = styles;
 
-function Dahsboard({ onLogout }) {
+function Dahsboard({ onLogout, userID }) {
     const [ turnos, setTurnos ] = useState([]);
     const [ user, setUser ] = useState({}); //temporal se va a mover cuando creemos el login verdadero
 
     useEffect(()=>{
         //llamado al back para que me de la info
-        const URL = `http://localhost:3000/users/1`; //modificar para usar user ID real
+        const URL = `http://localhost:3000/users/${userID}`; //modificar para usar user ID real
         axios.get(URL).then(resp=>{
             setTurnos(resp.data.appointments);
             setUser(resp.data)
