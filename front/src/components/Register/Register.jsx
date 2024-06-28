@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import axios from "axios";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 function Register({ title }) {
@@ -104,6 +105,7 @@ function Register({ title }) {
                 />
             </div>
             <button type="submit" className="btn btn-primary">Register</button>
+            <p className="text-center">Return <Link to='/'>HOME</Link></p>
         </form>
     )
 }

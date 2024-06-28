@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 function Login({ title, handleLogin }) {
@@ -42,6 +43,7 @@ function Login({ title, handleLogin }) {
                 />
             </div>
             <button type="submit" className="btn btn-primary">Submit</button>
+            <p className="text-center">Not a member? <Link to='/register'>Register now!</Link></p>
         </form>
     )
 }

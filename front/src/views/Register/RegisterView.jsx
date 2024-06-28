@@ -1,30 +1,23 @@
 /* eslint-disable no-unused-vars */
 import { useNavigate } from "react-router-dom";
-import Login from "../../components/Login/Login";
+import Register from "../../components/Register/Register";
 import SideBar from "../../components/SideBar/SideBar";
-import styles from './Home.module.css';
+import styles from './RegisterView.module.css';
 import { useEffect } from "react";
 const { 
     main,
 } = styles;
 
 // eslint-disable-next-line react/prop-types, no-unused-vars
-function Home({ userId, handleLogin }) {
+function RegisterView() {
     const navigate = useNavigate();
-
-
-    // RETOMAR CUANDO VEAMOS REDUX
-    useEffect(()=>{
-        if (userId) navigate('/dashboard');
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[]);
     
     return(
         <div className="container">
             <div className="row">
                 <SideBar />
                 <div className={`col-9 ${main}`}>
-                    <Login title="Login" handleLogin={handleLogin}/>
+                    <Register title="Register" />
                     <hr />
                 </div>
                 <div>
@@ -36,4 +29,4 @@ function Home({ userId, handleLogin }) {
     )
 }
 
-export default Home;
+export default RegisterView;
